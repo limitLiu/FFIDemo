@@ -1,8 +1,7 @@
 package wiki.mdzz.ffidemo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import wiki.mdzz.ffidemo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
