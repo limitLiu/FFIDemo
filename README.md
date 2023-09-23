@@ -147,22 +147,22 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     externalNativeBuild {
         cmake {
             path file('src/main/cpp/CMakeLists.txt')
-            version '3.18.1'
+            version '3.22.1'
         }
     }
     buildFeatures {
         viewBinding true
     }
-    ndkVersion '24.0.8215888'
+    ndkVersion '21.4.7075529'
 }
 ```
 然后我们执行一下, 就会发现, 你的 **Logcat** 告诉你说
