@@ -75,25 +75,22 @@ cargo build --target aarch64-linux-android --release
 
 ```bash
 export ANDROID_HOME=$HOME/Library/Android/sdk
-export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/21.4.7075529
+export NDK=$ANDROID_HOME/sdk/ndk/26.2.11394342
 cd ~/Library/Android/sdk/ndk
-python3 $ANDROID_NDK_HOME/build/tools/make_standalone_toolchain.py --api 28 --arch arm64 --install-dir ./arm64
+ln -s 26.2.11394342 version # 软链接对应版本
 ```
 
-上面只处理 arm64 的情况, 具体 ABI 根据自己的需要而定, 然后设置一下 .cargo/config 里面的内容
+上面只处理 arm64 的情况, 具体 ABI 根据自己的需要而定, 然后设置一下 ~/.cargo/config.toml 里面的内容
 
-```
+```toml
 [target.aarch64-linux-android]
-ar = "/Users/your name/Library/Android/sdk/ndk/arm64/bin/aarch64-linux-android-ar"
-linker = "/Users/your name/Library/Android/sdk/ndk/arm64/bin/aarch64-linux-android-clang"
+linker = "/Users/your name/Library/Android/sdk/ndk/version/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android28-clang"
 
 [target.armv7-linux-androideabi]
-ar = "/Users/your name/Library/Android/sdk/ndk/arm/bin/arm-linux-androideabi-ar"
-linker = "/Users/your name/Library/Android/sdk/ndk/arm/bin/arm-linux-androideabi-clang"
+linker = "/Users/your name/Library/Android/sdk/ndk/version/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi28-clang"
 
 [target.i686-linux-android]
-ar = "/Users/your name/Library/Android/sdk/ndk/x86/bin/i686-linux-android-ar"
-linker = "/Users/your name/Library/Android/sdk/ndk/x86/bin/i686-linux-android-clang"
+linker = "/Users/your name/Library/Android/sdk/ndk/version/toolchains/llvm/prebuilt/darwin-x86_64/bin/i686-linux-android28-clang"
 ```
 其实就是根据你指定的 target 使用用对应平台的链接器, 这里建议使用 NDK 的版本是 21, 更高版本的我还没测试过能不能编译通过.
 
@@ -123,12 +120,11 @@ target_link_libraries( # Specifies the target library.
 
 ```gradle
 android {
-    compileSdk 32
-
     defaultConfig {
+        compileSdk 34
+        buildToolsVersion = '34.0.0'
         applicationId "wiki.mdzz.ffidemo"
-        minSdk 26
-        targetSdk 32
+        minSdk 28
         versionCode 1
         versionName "1.0"
 
@@ -147,11 +143,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
     externalNativeBuild {
         cmake {
@@ -162,7 +158,8 @@ android {
     buildFeatures {
         viewBinding true
     }
-    ndkVersion '21.4.7075529'
+    ndkVersion '26.2.11394342'
+    namespace 'wiki.mdzz.ffidemo'
 }
 ```
 然后我们执行一下, 就会发现, 你的 **Logcat** 告诉你说
@@ -313,4 +310,4 @@ public native String stringFromJNI(String buf);
 ```
 ----
 
-不想看文字, 可以直接看项目 https://e.coding.net/limitLiu/java/FFIDemo.git
+不想看文字, 可以直接看项目 https://limitliu.coding.net/public/java/FFIDemo/git/files
