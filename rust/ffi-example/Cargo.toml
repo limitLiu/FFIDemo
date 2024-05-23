@@ -1,0 +1,12 @@
+[package]
+name = "ffi-example"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "ffi_example"
+crate-type = ["cdylib"]
+
+[dependencies]
+md5 = "0.7"
+jni = "0.21.1"
